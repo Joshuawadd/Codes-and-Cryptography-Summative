@@ -4,19 +4,20 @@ w = 2**16
 l = 2**8
 
 # read the .tex file, and modify the lines
-with open('test.tex') as f:
-    text = f.read()
+with open('test.tex') as fin:
+    text = fin.read()
 
 
 
-encode = ""
+encode = []
 
 i=0
 while i < len(text):
     #print("hey",text[i])
     if i == 0:
-        code = [0,0,text[i]]
+        code = [0,0, ord(text[i])]
         print(code)
+        encode.extend(code)
         i+=1
     else:
         window_end = i
@@ -59,23 +60,33 @@ while i < len(text):
         else:
             next_char = text[next_char_index]
 
-        code = [a,len(long_look_ahead), next_char]
+        next_char = str.encode(next_char)
+
+        code = [a,len(long_look_ahead), ord(next_char)]
+        encode.extend(code)
         i+=len(long_look_ahead)
         i+=1
         print(code)
 
-        size = 0
-        for item in code:
-            size += sys.getsizeof(str(item))
+        #for item in code:
+         #   print(bytearray(item))
+        
+        #print(bytes(code))
+
 
 
     
 
 #print(text)
 
-f.close()
+fin.close()
 
-# # write back the new document
-# with open('test.tex', 'w') as fout:
-#     for i in range(len(texdoc)):
-#         fout.write(texdoc[i])
+#byte_encode = bytearray(encode)
+print(encode)
+output = bytearray(encode)
+print(output)
+print(output.decode())
+
+# write back the new document
+with open('test.lz', 'wb') as fout:
+    fout.write(output)
