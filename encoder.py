@@ -1,27 +1,34 @@
 import sys
+import os
 
-w = 2**16
-l = 2**8
+testFile        = os.path.splitext(sys.argv[1])[0]
+inputFile       = testFile + ".tex"
+encodedFile     = testFile + ".lz"
+
+w = 2**16 -1
+l = 2**8 -1
 
 # read the .tex file, and modify the lines
-with open('test.tex') as fin:
+with open(inputFile) as fin:
     text = fin.read()
 
 
-
+test = 0
 encode = []
+
+q=1
 
 i=0
 while i < len(text):
     #print("hey",text[i])
     if i == 0:
         code = [0,0, ord(text[i])]
-        print(code)
+        #print(code)
         encode.extend(code)
         i+=1
     else:
         window_end = i
-        if i > w:
+        if i >= w:
             window_start = i - w
         else:
             window_start = 0
@@ -50,13 +57,14 @@ while i < len(text):
         #print(d)
         if len(long_look_ahead) != 0:
             next_char_index = i+len(long_look_ahead)
-            a = i-d
+            a = len(window) -d
+            #print("hey",a,i,d,len(window))
         else:
             next_char_index = i
             a=0
 
         if next_char_index == len(text):
-            next_char = '-' 
+            next_char = '' 
         else:
             next_char = text[next_char_index]
 
@@ -66,7 +74,12 @@ while i < len(text):
         encode.extend(code)
         i+=len(long_look_ahead)
         i+=1
-        print(code)
+
+        if a > test:
+            test = a
+
+        #print(code)
+        q+=1
 
         #for item in code:
          #   print(bytearray(item))
@@ -79,14 +92,25 @@ while i < len(text):
 
 #print(text)
 
-fin.close()
+
+#print(q*4)
 
 #byte_encode = bytearray(encode)
-print(encode)
-output = bytearray(encode)
-print(output)
-print(output.decode())
+#print(encode)
+#output = bytearray(encode)
+#print(output)
+#print(output.decode())
 
 # write back the new document
-with open('test.lz', 'wb') as fout:
-    fout.write(output)
+with open(encodedFile, 'wb') as fout:
+    i=2
+    byte = bytearray()
+    for item in encode:
+        if i==2:
+            byte = byte + item.to_bytes(2,'big')
+            i=0
+        else:
+            byte = byte + item.to_bytes(1,'big')
+            i+=1
+
+    fout.write(byte)
