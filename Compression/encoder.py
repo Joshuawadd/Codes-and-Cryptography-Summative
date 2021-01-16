@@ -9,7 +9,7 @@ w = 2**16 -1
 l = 2**8 -1
 
 # read the .tex file, and modify the lines
-with open(inputFile) as fin:
+with open(inputFile,'r',newline='') as fin:
     text = fin.read()
 
 
@@ -19,6 +19,7 @@ encode = []
 q=1
 
 i=0
+end = False
 while i < len(text):
     #print("hey",text[i])
     if i == 0:
@@ -63,14 +64,14 @@ while i < len(text):
             next_char_index = i
             a=0
 
-        if next_char_index == len(text):
-            next_char = '' 
-        else:
+        if next_char_index != len(text):
             next_char = text[next_char_index]
+            #print(next_char, str.encode(next_char))
+            next_char = str.encode(next_char)
+            code = [a,len(long_look_ahead), ord(next_char)]
+        else:
+            code = [a,len(long_look_ahead)]
 
-        next_char = str.encode(next_char)
-
-        code = [a,len(long_look_ahead), ord(next_char)]
         encode.extend(code)
         i+=len(long_look_ahead)
         i+=1
