@@ -6,10 +6,10 @@
 import os
 import sys
 
-testFile        = sys.argv[1]
-inputFile       = testFile + ".tex"
-encodedFile     = testFile + ".lz"
-decodedFile     = testFile + "-decoded.tex"
+testFile = sys.argv[1]
+inputFile = testFile + ".tex"
+encodedFile = testFile + ".lz"
+decodedFile = testFile + "-decoded.tex"
 
 
 # Size of input file
@@ -28,16 +28,16 @@ print("Encoded size: \t" + str(encodedSize) + "\n")
 os.system("python decoder.py " + encodedFile)
 decodedSize = os.path.getsize(decodedFile)
 print("Decoded file: \t" + decodedFile)
-print("Decoded size: \t"  + str(decodedSize) + "\n")
+print("Decoded size: \t" + str(decodedSize) + "\n")
 
 # Checks whether input and decoded files have the same size
 if decodedSize != inputSize:
     print("ERROR: Incorrect decoded file size")
 else:
     # Checks that input and decoded files are the same
-    if open(inputFile,'r').read() != open(decodedFile,'r').read():
+    if open(inputFile, 'r').read() != open(decodedFile, 'r').read():
         print("\n ERROR: Incorrect decoded file contents")
     else:
         # Files are the same.
-        print("\nSUCCESS: Lossless compression" )
-        print("COMPRESSION RATIO: \t"  + str(inputSize / encodedSize))
+        print("\nSUCCESS: Lossless compression")
+        print("COMPRESSION RATIO: \t" + str(inputSize / encodedSize))

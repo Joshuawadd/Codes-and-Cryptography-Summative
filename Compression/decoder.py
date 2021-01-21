@@ -1,32 +1,32 @@
 import sys
 import os
 
-testFile        = os.path.splitext(sys.argv[1])[0]
-encodedFile     = testFile + ".lz"
-decodedFile     = testFile + "-decoded.tex"
+testFile = os.path.splitext(sys.argv[1])[0]
+encodedFile = testFile + ".lz"
+decodedFile = testFile + "-decoded.tex"
 
 with open(encodedFile, 'rb') as fin:
     code = fin.read()
 
-#print(code)
-i=1
+# print(code)
+i = 1
 list = []
 triples = []
 for i, a in enumerate(code):
-    #print(a)
+    # print(a)
     if i % 4 == 0:
-        b=a
-        #i+=1
+        b = a
+        # i+=1
     else:
         if i % 4 == 1:
-            #print(b*256,a)
+            # print(b*256,a)
             a = (b*256)+a
-            #print(a)
+            # print(a)
         list.append(a)
         if i == len(code) - 1:
             triples.append(list)
         elif i % 4 == 3:
-            #if
+            # if
             triples.append(list)
             list = []
             #i = 1
@@ -39,7 +39,7 @@ for i, item in enumerate(triples):
     l = item[1]
     if len(item) == 3:
         m = chr(item[2])
-        #print(str.encode(m))
+        # print(str.encode(m))
     if l:
         right_string = 0-d+l
         if right_string == 0:
@@ -54,7 +54,7 @@ for i, item in enumerate(triples):
     text = text + new_text
     #print(new_text, l,d,m)
 
-#print(text)
+# print(text)
 
 fin.close()
 

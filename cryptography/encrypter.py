@@ -35,8 +35,8 @@ while not key_found:
 
     duration = time.time() - start
 
-    if counter % 2**16 == 0:
-        print(duration, counter)
+    if counter % 10000 == 0:
+        print(duration, counter, counter/duration)
 
 
 plaintext = key0.decrypt(bytes.fromhex(ciphertext))
